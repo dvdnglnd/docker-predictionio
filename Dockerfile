@@ -53,7 +53,7 @@ RUN mkdir /apache-predictionio && \
     wget -O - http://www-us.apache.org/dist/incubator/predictionio/0.12.0-incubating/apache-predictionio-0.12.0-incubating.tar.gz | tar zx -C /apache-predictionio && \
     cd apache-predictionio* && \
     ./make-distribution.sh && \
-    tar zxvf PredictionIO-0.10.0-incubating.tar.gz && \
+    tar zxvf PredictionIO-0.12.0-incubating.tar.gz && \
     rm *gz && \
     mv PredictionIO* /PredictionIO
 ENV PIO_HOME /PredictionIO
