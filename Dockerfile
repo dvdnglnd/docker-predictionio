@@ -38,7 +38,7 @@ RUN mv /elasticsearch* /elasticsearch
 #HBase
 RUN wget -O - http://archive.apache.org/dist/hbase/hbase-1.0.0/hbase-1.0.0-bin.tar.gz  | tar zx
 RUN mv /hbase* /hbase
-RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> /hbase/conf/hbase-env.sh 
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-oracle" >> /hbase/conf/hbase-env.sh
 
 #Python SDK
 RUN apt-get install -y python-pip
@@ -49,7 +49,8 @@ RUN pip install predictionio
 RUN apt-get install -y libgfortran3 libatlas3-base libopenblas-base
 
 #PredictionIO
-RUN wget -O - http://www-us.apache.org/dist/incubator/predictionio/0.10.0-incubating/apache-predictionio-0.10.0-incubating.tar.gz | tar zx && \
+RUN mkdir /apache-predictionio && \
+    wget -O - http://www-us.apache.org/dist/incubator/predictionio/0.12.0-incubating/apache-predictionio-0.12.0-incubating.tar.gz | tar zx -C /apache-predictionio && \
     cd apache-predictionio* && \
     ./make-distribution.sh && \
     tar zxvf PredictionIO-0.10.0-incubating.tar.gz && \
@@ -59,7 +60,7 @@ ENV PIO_HOME /PredictionIO
 ENV PATH $PATH:$PIO_HOME/bin
 
 #Download SBT
-#RUN /PredictionIO/sbt/sbt package 
+#RUN /PredictionIO/sbt/sbt package
 
 #Configuration
 RUN sed -i 's|SPARK_HOME=.*|SPARK_HOME=/spark|' /PredictionIO/conf/pio-env.sh
@@ -79,6 +80,6 @@ COPY hbase-env.sh /hbase/conf/
 COPY quickstartapp quickstartapp
 
 #Add runit services
-COPY sv /etc/service 
+COPY sv /etc/service
 ARG BUILD_INFO
 LABEL BUILD_INFO=$BUILD_INFO
